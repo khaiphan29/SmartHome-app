@@ -19,6 +19,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.lang.Math;
 
 /**
  * Created by khaiphan on 30/04/2022.
@@ -37,6 +38,10 @@ public class Model {
     private String tempData = "-- °C";
     private String humidData = "-- %";
 
+    private int tempPos = 0;
+    private int airPos = 0;
+    private int humidPos = 0;
+
     private int tempViewID, humidViewID, airVIewID, ledButtonID, fanButtonID, doorButtonID, tempGraphID, humidGraphID, airGraphID;
 
     //Graph
@@ -50,7 +55,25 @@ public class Model {
         this.activity = _activity;
         this.actContext = _actContext;
         dbHandler = new DBHandler(actContext);
-        dbHandler.resetData();
+        //dbHandler.resetData();
+        tempSeries.resetData(dbHandler.getDataPoint("tempTable", tempPos));
+        humidSeries.resetData(dbHandler.getDataPoint("humidTable", humidPos));
+        airSeries.resetData(dbHandler.getDataPoint("airTable", airPos));
+
+        DataPoint[] tempSeries = dbHandler.getDataPoint("tempTable", 0);
+        if (tempSeries.length > 0)
+            tempData = String.valueOf(tempSeries[tempSeries.length - 1].getY()) + " °C";
+        tempSeries = dbHandler.getDataPoint("humidTable", 0);
+        if (tempSeries.length > 0){
+            int value = (int)(tempSeries[tempSeries.length - 1].getY() * 100);
+            humidData = String.valueOf( value/100.0 ) + " %";
+        }
+
+        tempSeries = dbHandler.getDataPoint("airTable", 0);
+        if (tempSeries.length > 0) {
+            int value = (int)(tempSeries[tempSeries.length - 1].getY() * 100);
+            airData = String.valueOf(value/100.0) + " ppm";
+        }
     }
 
     public void setRoomID (int _tempViewID, int _humidViewID, int _airVIewID, int _ledButtonID, int _fanButtonID, int _doorButtonID) {
@@ -68,30 +91,29 @@ public class Model {
         airGraphID = _airGraphID;
     }
 
-    public void updateStatFrag () {
-        addSer((GraphView)activity.findViewById(tempGraphID));
-        addSer1((GraphView)activity.findViewById(humidGraphID));
-        addSer2((GraphView)activity.findViewById(airGraphID));
+    public void setTempPos(int pos) {
+        if (pos == 0) tempPos = 0;
+        tempPos += pos;
+        if (tempPos < 0) tempPos = 0;
+        tempSeries.resetData(dbHandler.getDataPoint("tempTable", tempPos));
+        ((GraphView)activity.findViewById(tempGraphID)).getViewport().setMaxX(tempSeries.getHighestValueX());
+        ((GraphView)activity.findViewById(tempGraphID)).getViewport().setMinX(tempSeries.getLowestValueX());
     }
-
-
-    private void addSeries(GraphView graphView, LineGraphSeries<DataPoint> series)
-    {
-        graphView.addSeries(series);
+    public void setHumidPos(int pos) {
+        if (pos == 0) humidPos = 0;
+        humidPos += pos;
+        if (humidPos < 0) humidPos = 0;
+        humidSeries.resetData(dbHandler.getDataPoint("humidTable", humidPos));
+        ((GraphView)activity.findViewById(humidGraphID)).getViewport().setMaxX(humidSeries.getHighestValueX());
+        ((GraphView)activity.findViewById(humidGraphID)).getViewport().setMinX(humidSeries.getLowestValueX());
     }
-
-    //Graph test
-    private void addSer(GraphView graphView)
-    {
-        graphView.addSeries(tempSeries);
-    }
-    private void addSer1(GraphView graphView)
-    {
-        graphView.addSeries(humidSeries);
-    }
-    private void addSer2(GraphView graphView)
-    {
-        graphView.addSeries(airSeries);
+    public void setAirPos(int pos) {
+        if (pos == 0) airPos = 0;
+        airPos += pos;
+        if (airPos < 0) airPos = 0;
+        airSeries.resetData(dbHandler.getDataPoint("airTable", airPos));
+        ((GraphView)activity.findViewById(airGraphID)).getViewport().setMaxX(airSeries.getHighestValueX());
+        ((GraphView)activity.findViewById(airGraphID)).getViewport().setMinX(airSeries.getLowestValueX());
     }
 
     public String getTempData() {return tempData;}
@@ -169,7 +191,9 @@ public class Model {
                     long xValue = new Date().getTime();
                     float yValue = Float.parseFloat(message.toString());
                     dbHandler.insertData("tempTable", xValue, yValue);
-                    tempSeries.resetData(dbHandler.getDataPoint("tempTable"));
+                    tempSeries.resetData(dbHandler.getDataPoint("tempTable", tempPos));
+                    ((GraphView)activity.findViewById(tempGraphID)).getViewport().setMaxX(tempSeries.getHighestValueX());
+                    ((GraphView)activity.findViewById(tempGraphID)).getViewport().setMinX(tempSeries.getLowestValueX());
                 }
                 if(topic.equals("izayazuna/feeds/humidity")){
                     try {
@@ -181,18 +205,22 @@ public class Model {
                     long xValue = new Date().getTime();
                     float yValue = Float.parseFloat(message.toString());
                     dbHandler.insertData("humidTable", xValue, yValue);
-                    humidSeries.resetData(dbHandler.getDataPoint("humidTable"));
+                    humidSeries.resetData(dbHandler.getDataPoint("humidTable", humidPos));
+                    ((GraphView)activity.findViewById(humidGraphID)).getViewport().setMaxX(humidSeries.getHighestValueX());
+                    ((GraphView)activity.findViewById(humidGraphID)).getViewport().setMinX(humidSeries.getLowestValueX());
 
                 }
                 if(topic.equals("izayazuna/feeds/air quaility")){
                     try {
-                        ((TextView)activity.findViewById(humidViewID)).setText(message.toString() + " %");
+                        ((TextView)activity.findViewById(airVIewID)).setText(message.toString() + " %");
                     } catch (Throwable str) {}
                     airData = message.toString() + " ppm";
                     long xValue = new Date().getTime();
                     float yValue = Float.parseFloat(message.toString());
                     dbHandler.insertData("airTable", xValue, yValue);
-                    airSeries.resetData(dbHandler.getDataPoint("airTable"));
+                    airSeries.resetData(dbHandler.getDataPoint("airTable", airPos));
+                    ((GraphView)activity.findViewById(airGraphID)).getViewport().setMaxX(airSeries.getHighestValueX());
+                    ((GraphView)activity.findViewById(airGraphID)).getViewport().setMinX(airSeries.getLowestValueX());
                 }
                 if(topic.equals("izayazuna/feeds/led")){
                     if(message.toString().equals("1"))

@@ -10,92 +10,181 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
+
+        <!--app:layout_widthPercent="100%"-->
+        <!--app:layout_heightPercent="10%"-->
+        <!--app:layout_marginTopPercent="0%"-->
+        <!--app:layout_marginStartPercent="0%"-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="Temperature"
-            android:textColor="#e4967d"
-            android:textSize="20dp"
-            android:textStyle="bold|italic" />
-            <!--app:layout_widthPercent="100%"-->
-            <!--app:layout_heightPercent="10%"-->
-            <!--app:layout_marginTopPercent="0%"-->
-            <!--app:layout_marginStartPercent="0%"-->
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Temperature"
+                android:paddingRight="92dp"
+                android:textColor="#e4967d"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <Button
+                android:id="@+id/temp_pre_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Previous"
+                android:textAllCaps="false"
+                android:textColor="#e4967d" />
+
+            <Button
+                android:id="@+id/temp_next_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="#e4967d" />
+
+            <Button
+                android:id="@+id/temp_latest_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=">>>"
+                android:textAllCaps="false"
+                android:textColor="#e4967d" />
+        </LinearLayout>
 
         <com.jjoe64.graphview.GraphView
             android:id="@+id/TempLine"
-            android:layout_height="220dp"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
 
 
-            <!--app:layout_widthPercent="100%"-->
-            <!--app:layout_heightPercent="40%"-->
-            <!--app:layout_marginTopPercent="10%"-->
-            <!--app:layout_marginStartPercent="0%"/>-->
+        <!--app:layout_widthPercent="100%"-->
+        <!--app:layout_heightPercent="40%"-->
+        <!--app:layout_marginTopPercent="10%"-->
+        <!--app:layout_marginStartPercent="0%"/>-->
 
-
-        <TextView
-            android:text="Humidity"
-            android:layout_margin="10dp"
-            android:textStyle="bold|italic"
-            android:textSize="20dp"
-            android:textColor="#7db4e4"
-            android:gravity="center"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-            <!--app:layout_widthPercent="100%"-->
-            <!--app:layout_heightPercent="10%"-->
-            <!--app:layout_marginTopPercent="50%"-->
-            <!--app:layout_marginStartPercent="0%"-->
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Humidity"
+                android:paddingRight="120dp"
+                android:textColor="#7db4e4"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <Button
+                android:id="@+id/humid_pre_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="0px"
+                android:text="Previous"
+                android:textAllCaps="false"
+                android:textColor="#7db4e4" />
+
+            <Button
+                android:id="@+id/humid_next_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="0px"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="#7db4e4" />
+
+            <Button
+                android:id="@+id/humid_latest_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=">>>"
+                android:textAllCaps="false"
+                android:textColor="#7db4e4"
+                android:textSize="20sp" />
+        </LinearLayout>
 
 
         <com.jjoe64.graphview.GraphView
             android:id="@+id/HumiLine"
-            android:layout_height="220dp"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
 
-    <!--        app:layout_widthPercent="100%"
-            app:layout_heightPercent="40%"
-            app:layout_marginTopPercent="60%"
-            app:layout_marginStartPercent="0%"-->
-
-            <!--app:layout_widthPercent="80%"-->
-            <!--app:layout_heightPercent="30%"-->
-            <!--app:layout_marginTopPercent="1%"-->
-            <!--app:layout_marginStartPercent="10%"/>-->
-
-        <!--<com.jjoe64.graphview.GraphView-->
-            <!--android:id="@+id/HumiLine"-->
-
-            <!--app:layout_widthPercent="80%"-->
-            <!--app:layout_heightPercent="30%"-->
-            <!--app:layout_marginTopPercent="34%"-->
-            <!--app:layout_marginStartPercent="10%"/>-->
-
-        <TextView
-            android:text="Air Condidtion"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="#98ca6b"
-            android:gravity="center"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Air Condidtion"
+                android:paddingRight="75dp"
+                android:textColor="#98ca6b"
+                android:textSize="20dp"
+                android:textStyle="bold|italic" />
+
+            <Button
+                android:id="@+id/air_pre_button"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="0px"
+                android:text="Previous"
+                android:textAllCaps="false"
+                android:textColor="#98ca6b" />
+
+            <Button
+                android:id="@+id/air_next_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="0px"
+                android:text="Next"
+                android:textAllCaps="false"
+                android:textColor="#98ca6b" />
+
+            <Button
+                android:id="@+id/air_latest_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=">>>"
+                android:textAllCaps="false"
+                android:textColor="#98ca6b"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <com.jjoe64.graphview.GraphView
             android:id="@+id/AirLine"
-            android:layout_height="220dp"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
 
-            <!--app:layout_widthPercent="80%"-->
-            <!--app:layout_heightPercent="30%"-->
-            <!--app:layout_marginTopPercent="67%"-->
-            <!--app:layout_marginStartPercent="10%"/>-->
+        <!--app:layout_widthPercent="80%"-->
+        <!--app:layout_heightPercent="30%"-->
+        <!--app:layout_marginTopPercent="67%"-->
+        <!--app:layout_marginStartPercent="10%"/>-->
     </LinearLayout>
 
 

@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import java.lang.Object;
 
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.time.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.* ;
 
 /**
  * Created by ADMIN on 3/28/2022.
@@ -55,17 +57,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public DataPoint[] getDataPoint(String tableName)
+    public DataPoint[] getDataPoint(String tableName, int pos)
     {
         String[] columns = {"xValues", "yValues"};
         Cursor cursor = this.getWritableDatabase().query(tableName ,columns, null,null,null,null,null );
+        int numOfRecord = 6;
+        if (cursor.getCount() >= numOfRecord) {
+            //Log.d("mqtt", "Got " + String.valueOf( cursor.getCount()));
+            DataPoint[] dp = new DataPoint[numOfRecord];
+            if (cursor.getCount() - numOfRecord - pos >= 0)
+                cursor.moveToPosition(cursor.getCount() - numOfRecord - pos);
+            else cursor.moveToPosition(cursor.getCount() - numOfRecord);
+
+
+            for (int i = 0; i < numOfRecord; i ++){
+                Log.d("mqtt", "y: " + String.valueOf(cursor.getFloat(1)));
+                dp[i] = new DataPoint(cursor.getLong(0), cursor.getFloat(1));
+                cursor.moveToNext();
+            }
+            Log.d("mqtt", "-----");
+            return dp;
+        }
+
         DataPoint[] dp = new DataPoint[cursor.getCount()];
         for (int i = 0; i < cursor.getCount(); i ++){
             cursor.moveToNext();
             dp[i] = new DataPoint(cursor.getLong(0), cursor.getFloat(1));
         }
+
         return dp;
     }
+
     //Register
     public Boolean insertUserData(String username, String password){
         SQLiteDatabase MyDB = this.getWritableDatabase();
