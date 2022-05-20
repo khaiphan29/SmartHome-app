@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/main_background"
+    android:padding="10dp"
+    tools:context="dashboard.iot.bku.roomcontrol.RoomService">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corner"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Hi Boss, Welcome Home"
+        android:textSize="20dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/RoomState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            android:text="Room"/>
+
+        <Button
+            android:id="@+id/Statistic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:layout_marginLeft="1dp"
+            android:layout_weight="1"
+            android:text="Graph"/>
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+
+    </FrameLayout>
+
+</LinearLayout>
