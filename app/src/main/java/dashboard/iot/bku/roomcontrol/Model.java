@@ -61,8 +61,11 @@ public class Model {
         airSeries.resetData(dbHandler.getDataPoint("airTable", airPos));
 
         DataPoint[] tempSeries = dbHandler.getDataPoint("tempTable", 0);
-        if (tempSeries.length > 0)
-            tempData = String.valueOf(tempSeries[tempSeries.length - 1].getY()) + " °C";
+        if (tempSeries.length > 0){
+            int value = (int)(tempSeries[tempSeries.length - 1].getY() * 100);
+            tempData = String.valueOf( value/100.0 ) + " °C";
+        }
+
         tempSeries = dbHandler.getDataPoint("humidTable", 0);
         if (tempSeries.length > 0){
             int value = (int)(tempSeries[tempSeries.length - 1].getY() * 100);
@@ -212,7 +215,7 @@ public class Model {
                 }
                 if(topic.equals("izayazuna/feeds/air quaility")){
                     try {
-                        ((TextView)activity.findViewById(airVIewID)).setText(message.toString() + " %");
+                        ((TextView)activity.findViewById(airVIewID)).setText(message.toString() + " ppm");
                     } catch (Throwable str) {}
                     airData = message.toString() + " ppm";
                     long xValue = new Date().getTime();
